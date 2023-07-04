@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: public
+        enable_lazy_load_no_trans: true
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
