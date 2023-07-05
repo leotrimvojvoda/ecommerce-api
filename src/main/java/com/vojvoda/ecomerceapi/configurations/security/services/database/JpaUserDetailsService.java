@@ -1,4 +1,4 @@
-package com.vojvoda.ecomerceapi.configurations.security.services;
+package com.vojvoda.ecomerceapi.configurations.security.services.database;
 
 
 import com.vojvoda.ecomerceapi.configurations.security.SecurityUser;
@@ -17,9 +17,9 @@ public class JpaUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    var u = userRepository.findUserByUsername(username);
+    var u = userRepository.findByEmail(username);
 
     return u.map(SecurityUser::new)
-        .orElseThrow(() -> new UsernameNotFoundException("Username not found " + username));
+        .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
   }
 }

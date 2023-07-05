@@ -15,3 +15,9 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
+key: bf9131935436709eef135bc7c30a4b7f3ce517a6f7a535826f4904b44c68b6f5aad340127a907e44
+
+token:
+  signing:
+    key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351
