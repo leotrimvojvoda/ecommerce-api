@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/demo")
+@RequestMapping("/demo")
 @RequiredArgsConstructor
 public class DemoController {
 

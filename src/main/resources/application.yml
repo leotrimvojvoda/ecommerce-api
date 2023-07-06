@@ -15,6 +15,10 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+server:
+  port: ${API_PORT:8080}
+  servlet:
+    context-path: /api/v1
 
 key: bf9131935436709eef135bc7c30a4b7f3ce517a6f7a535826f4904b44c68b6f5aad340127a907e44
 
