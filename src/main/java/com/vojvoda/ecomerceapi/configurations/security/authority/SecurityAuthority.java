@@ -1,7 +1,5 @@
-package com.vojvoda.ecomerceapi.configurations.security;
+package com.vojvoda.ecomerceapi.configurations.security.authority;
 
-
-import com.vojvoda.ecomerceapi.configurations.security.authority.Authority;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
