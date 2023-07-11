@@ -1,5 +1,6 @@
 package com.vojvoda.ecomerceapi;
 
+import com.vojvoda.ecomerceapi.configurations.security.user.SecurityUser;
 import com.vojvoda.ecomerceapi.configurations.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class DemoController {
 
     String tenant = TenantContext.getCurrentTenant();
 
-    return "Hello, "+tenant;
+    return "Hello, "+tenant +" "+ SecurityUser.getCurrentUser().getId();
 
   }
 }
