@@ -1,4 +1,4 @@
-package com.vojvoda.ecomerceapi.configurations.security;
+package com.vojvoda.ecomerceapi.configurations.security.configuration;
 
 import com.vojvoda.ecomerceapi.configurations.security.services.authentication.JwtAuthenticationFilter;
 import com.vojvoda.ecomerceapi.configurations.security.services.database.JpaUserDetailsService;
@@ -31,12 +31,14 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**","/api/v1/demo/hello")
+            .authorizeHttpRequests(request -> request.requestMatchers("/auth/**")
                     .permitAll()
-                    .anyRequest().authenticated())
+                    .anyRequest()
+                    .authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-            .authenticationProvider(authenticationProvider()).addFilterBefore(
-                    jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     return http.build();
   }
 

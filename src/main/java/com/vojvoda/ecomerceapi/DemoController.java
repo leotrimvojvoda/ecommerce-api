@@ -1,5 +1,6 @@
 package com.vojvoda.ecomerceapi;
 
+import com.vojvoda.ecomerceapi.configurations.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,10 @@ public class DemoController {
 
   @GetMapping("/hello")
   public String demo() {
-    return "Hello";
+
+    String tenant = TenantContext.getCurrentTenant();
+
+    return "Hello, "+tenant;
+
   }
 }

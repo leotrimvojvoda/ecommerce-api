@@ -1,4 +1,4 @@
-package com.vojvoda.ecomerceapi.configurations.security;
+package com.vojvoda.ecomerceapi.configurations.security.user;
 
 import com.vojvoda.ecomerceapi.configurations.security.authority.SecurityAuthority;
 import com.vojvoda.ecomerceapi.core.user.User;

@@ -4,7 +4,7 @@ import org.springframework.security.core.AuthenticationException;
 
 public class AuthorityNotFoundException extends AuthenticationException {
 
-    public AuthorityNotFoundException(String msg) {
-        super(msg);
+    public AuthorityNotFoundException(String message) {
+        super(message);
     }
 }
