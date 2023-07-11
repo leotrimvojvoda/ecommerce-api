@@ -1,7 +1,7 @@
 package com.vojvoda.ecomerceapi.configurations.security.services.database;
 
 
-import com.vojvoda.ecomerceapi.configurations.security.SecurityUser;
+import com.vojvoda.ecomerceapi.configurations.security.user.SecurityUser;
 import com.vojvoda.ecomerceapi.core.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

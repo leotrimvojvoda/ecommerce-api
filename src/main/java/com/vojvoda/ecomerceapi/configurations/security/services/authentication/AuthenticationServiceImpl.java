@@ -1,6 +1,6 @@
 package com.vojvoda.ecomerceapi.configurations.security.services.authentication;
 
-import com.vojvoda.ecomerceapi.configurations.security.SecurityUser;
+import com.vojvoda.ecomerceapi.configurations.security.user.SecurityUser;
 import com.vojvoda.ecomerceapi.configurations.security.authority.Authority;
 import com.vojvoda.ecomerceapi.configurations.security.authority.AuthorityNotFoundException;
 import com.vojvoda.ecomerceapi.configurations.security.authority.AuthorityRepository;

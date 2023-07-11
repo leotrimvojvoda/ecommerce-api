@@ -1,5 +1,6 @@
 package com.vojvoda.ecomerceapi.configurations.security.services.jwt;
 
+import com.vojvoda.ecomerceapi.configurations.tenant.TenantContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,9 +33,16 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails, String tenant) {
         final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        final String jwtTenant = extractTenant(token);
+
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token) && jwtTenant.equals(tenant);
+    }
+
+    @Override
+    public String extractTenant(String token) {
+        return extractClaim(token,Claims::getAudience);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
@@ -45,6 +53,7 @@ public class JwtServiceImpl implements JwtService {
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setAudience(TenantContext.getCurrentTenant())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }

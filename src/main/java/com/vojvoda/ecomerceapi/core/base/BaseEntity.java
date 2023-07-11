@@ -1,5 +1,6 @@
 package com.vojvoda.ecomerceapi.core.base;
 
+import com.vojvoda.ecomerceapi.core.tenant.Tenant;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,9 @@ public abstract class BaseEntity implements Serializable {
 
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tenant_id",referencedColumnName = "id")
+    private Tenant tenant;
 
 }

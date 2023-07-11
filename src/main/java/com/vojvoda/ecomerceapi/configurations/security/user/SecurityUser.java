@@ -1,9 +1,10 @@
-package com.vojvoda.ecomerceapi.configurations.security;
+package com.vojvoda.ecomerceapi.configurations.security.user;
 
 import com.vojvoda.ecomerceapi.configurations.security.authority.SecurityAuthority;
 import com.vojvoda.ecomerceapi.core.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -13,6 +14,10 @@ import java.util.stream.Collectors;
 public class SecurityUser implements UserDetails {
 
   private final User user;
+
+  public User getUser(){
+    return user;
+  }
 
   @Override
   public String getUsername() {
@@ -50,5 +55,9 @@ public class SecurityUser implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public static User getCurrentUser(){
+    return ((SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
   }
 }

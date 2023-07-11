@@ -1,6 +1,7 @@
 package com.vojvoda.ecomerceapi.core.user;
 
 import com.vojvoda.ecomerceapi.configurations.security.authority.Authority;
+import com.vojvoda.ecomerceapi.core.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class User extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
