@@ -25,6 +25,4 @@ public class Authority {
           inverseJoinColumns = @JoinColumn(name = "user_id")
   )
   private Set<User> users;
-
-
 }

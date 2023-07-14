@@ -18,7 +18,7 @@ public class DemoController {
 
     String tenant = TenantContext.getCurrentTenant();
 
-    return "Hello, "+tenant +" "+ SecurityUser.getCurrentUser().getId();
+    return "Hello, "+SecurityUser.getCurrentUser().getEmail() +", from "+ tenant;
 
   }
 }

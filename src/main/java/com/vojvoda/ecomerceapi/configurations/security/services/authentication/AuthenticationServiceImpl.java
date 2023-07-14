@@ -49,7 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setAuthorities(Set.of(authorities));
 
         userRepository.save(user);
+
         var jwt = jwtService.generateToken(new SecurityUser(user));
+
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 

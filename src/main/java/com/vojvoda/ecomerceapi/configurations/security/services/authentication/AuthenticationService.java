@@ -5,7 +5,9 @@ import com.vojvoda.ecomerceapi.configurations.security.dto.SignInRequest;
 import com.vojvoda.ecomerceapi.configurations.security.dto.SignUpRequest;
 
 public interface AuthenticationService {
+
     JwtAuthenticationResponse signup(SignUpRequest request);
 
     JwtAuthenticationResponse signIn(SignInRequest request);
+
 }
