@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@Order(1)
 @RequiredArgsConstructor
 @Log4j2
+@Order(1)
 class TenantFilter implements Filter {
 
     @Override

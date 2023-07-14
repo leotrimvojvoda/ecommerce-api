@@ -7,4 +7,5 @@ public class AuthorityNotFoundException extends AuthenticationException {
     public AuthorityNotFoundException(String message) {
         super(message);
     }
+
 }
