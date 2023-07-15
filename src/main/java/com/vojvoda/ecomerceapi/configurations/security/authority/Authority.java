@@ -17,7 +17,8 @@ public class Authority {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  private String name;
+  @Enumerated(EnumType.STRING)
+  private AuthorityEnum name;
 
   @ManyToMany
   @JoinTable(name = "users_authorities",
