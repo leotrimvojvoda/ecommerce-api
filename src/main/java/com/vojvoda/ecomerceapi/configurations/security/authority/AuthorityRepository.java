@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
-    Optional<Authority> getAuthorityByName(String name);
+    Optional<Authority> getAuthorityByName(AuthorityEnum name);
 
 }
