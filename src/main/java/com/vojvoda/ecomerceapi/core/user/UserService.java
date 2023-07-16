@@ -12,9 +12,9 @@ public interface UserService {
 
     User createUser(@Valid CreateUser createUser);
 
-    Optional<User> findUserById(Long id);
+    ViewUser findUserById(Long id);
 
-    Optional<User> findUserByEmail(String email);
+    ViewUser findUserByEmail(String email);
 
     List<ViewUser> findAllUsers();
 

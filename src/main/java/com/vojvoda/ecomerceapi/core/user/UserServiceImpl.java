@@ -7,11 +7,11 @@ import com.vojvoda.ecomerceapi.core.user.dto.request.CreateUser;
 import com.vojvoda.ecomerceapi.core.user.dto.request.UpdateUser;
 import com.vojvoda.ecomerceapi.core.user.dto.response.ViewUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -40,23 +40,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserById(Long id) {
-        return Optional.empty();
+    public ViewUser findUserById(Long id) {
+        ViewUser viewUser = userRepository.findUserById(id);
+
+        if(viewUser != null)
+            return viewUser;
+        else throw new UsernameNotFoundException("User not found: "+id);
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) {
-        return Optional.empty();
+    public ViewUser findUserByEmail(String email) {
+        ViewUser viewUser = userRepository.findUserByEmail(email);
+
+        if(viewUser != null)
+            return viewUser;
+        else throw new RuntimeException("User not found: "+email);
     }
 
     @Override
     public List<ViewUser> findAllUsers() {
-        return null;
+        List<ViewUser> viewUser = userRepository.findAllUsers();
+
+        if(viewUser != null)
+            return viewUser;
+        else throw new RuntimeException("No users found");
     }
 
     @Override
     public void deleteUserById(Long id) {
-
+        userRepository.deleteUserById(id);
     }
 
     @Override
