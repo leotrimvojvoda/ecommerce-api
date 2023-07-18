@@ -1,6 +1,7 @@
 package com.vojvoda.ecomerceapi.core.user;
 
 import com.vojvoda.ecomerceapi.core.user.dto.request.CreateUser;
+import com.vojvoda.ecomerceapi.core.user.dto.request.UpdateUser;
 import com.vojvoda.ecomerceapi.core.user.dto.response.ViewUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,18 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
-    @DeleteMapping
-    private ResponseEntity<?> deleteUser(@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteUser(@PathVariable Long id){
         userService.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    private ResponseEntity<?> updateUser(@RequestBody @Valid UpdateUser updateUser){
+        userService.updateUser(updateUser);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }

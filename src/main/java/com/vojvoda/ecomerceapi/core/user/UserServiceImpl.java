@@ -6,12 +6,15 @@ import com.vojvoda.ecomerceapi.configurations.security.authority.AuthorityReposi
 import com.vojvoda.ecomerceapi.core.user.dto.request.CreateUser;
 import com.vojvoda.ecomerceapi.core.user.dto.request.UpdateUser;
 import com.vojvoda.ecomerceapi.core.user.dto.response.ViewUser;
+import com.vojvoda.ecomerceapi.exceptions.models.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -66,6 +69,7 @@ public class UserServiceImpl implements UserService {
         else throw new RuntimeException("No users found");
     }
 
+    @Transactional
     @Override
     public void deleteUserById(Long id) {
         userRepository.deleteUserById(id);
@@ -73,6 +77,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UpdateUser updateUser) {
+        User user = userRepository.findById(updateUser.getId()).orElseThrow(() -> new UserNotFoundException("User not found: "+updateUser.getId()));
 
+        user.setFirstName(updateUser.getFirstName());
+        user.setLastName(updateUser.getLastName());
+
+        userRepository.save(user);
     }
 }
