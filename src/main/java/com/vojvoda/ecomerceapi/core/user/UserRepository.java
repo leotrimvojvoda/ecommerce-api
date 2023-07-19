@@ -11,11 +11,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+  @Query("SELECT u FROM User u WHERE u.email = ?1 AND u.deletedAt IS NULL")
   Optional<User> findByEmail(String username);
 
   @Query("SELECT new com.vojvoda.ecomerceapi.core.user.dto.response.ViewUser"
           + "(u.id, u.firstName, u.lastName, u.email) FROM User u WHERE u.id = ?1 AND u.deletedAt IS NULL")
-  ViewUser findUserById(long id);
+  Optional<ViewUser> findUserById(long id);
 
   @Query("SELECT new com.vojvoda.ecomerceapi.core.user.dto.response.ViewUser"
           + "(u.id, u.firstName, u.lastName, u.email) FROM User u WHERE u.email = ?1 AND u.deletedAt IS NULL")

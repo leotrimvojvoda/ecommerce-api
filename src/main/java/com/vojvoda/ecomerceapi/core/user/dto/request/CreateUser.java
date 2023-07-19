@@ -26,6 +26,5 @@ public class CreateUser{
         String password;
 
         @NotNull(message = "Authority cannot be null")
-        @NotBlank(message = "Authority cannot be blank")
         AuthorityEnum authority;
 }
