@@ -12,7 +12,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-@Order(1)
+@Order(-999)
 class TenantFilter implements Filter {
 
     @Override

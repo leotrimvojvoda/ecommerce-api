@@ -1,12 +1,13 @@
 package com.vojvoda.ecommerceapi.configurations.security.services.jwt;
 
+import com.vojvoda.ecommerceapi.configurations.exceptions.models.TenantException;
+import com.vojvoda.ecommerceapi.configurations.tenant.MultiTenantConfiguration;
 import com.vojvoda.ecommerceapi.configurations.tenant.TenantContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,11 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
+    private final MultiTenantConfiguration multiTenantConfiguration;
+
+    public JwtServiceImpl(MultiTenantConfiguration multiTenantConfiguration) {
+        this.multiTenantConfiguration = multiTenantConfiguration;
+    }
 
     @Override
     public String extractUserName(String token) {
@@ -42,7 +46,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractTenant(String token) {
-        return extractClaim(token,Claims::getAudience);
+        return extractClaim(token, Claims::getAudience);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
@@ -54,7 +58,7 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setAudience(TenantContext.getCurrentTenant())
-                //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 1000 * 60 * 24)) // 2069
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -72,7 +76,20 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
+        byte[] keyBytes = Decoders.BASE64.decode(getTenantJwtSigningKey());
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String getTenantJwtSigningKey() {
+        String tenantId = TenantContext.getCurrentTenant();
+
+        if (tenantId == null || tenantId.isBlank())
+            throw new TenantException("Error getting tenant jwt signing key");
+
+        return multiTenantConfiguration.getTenantProperties().stream()
+                .filter(properties -> tenantId.equals(properties.getProperty("name")))
+                .map(properties -> properties.getProperty("token.signing.key"))
+                .findFirst()
+                .orElse(null);
     }
 }
