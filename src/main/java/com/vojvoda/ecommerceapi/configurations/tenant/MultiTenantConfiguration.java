@@ -12,41 +12,31 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Configuration
 public class MultiTenantConfiguration {
 
-    @Value("${defaultTenant}")
+    @Value("${default-tenant}")
     private String defaultTenant;
 
     @Bean
     @ConfigurationProperties(prefix = "tenants")
     public DataSource dataSource() {
-        File[] files = Paths.get("allTenants").toFile().listFiles();
         Map<Object, Object> resolvedDataSources = new HashMap<>();
 
-        if(files !=null){
-            for (File propertyFile : files) {
-                Properties tenantProperties = new Properties();
-                DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+        List<Properties> propertiesList = getTenantProperties();
 
-                try {
-                    tenantProperties.load(new FileInputStream(propertyFile));
-                    String tenantId = tenantProperties.getProperty("name");
+        for(Properties properties : propertiesList){
+            DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+            String tenantId = properties.getProperty("name");
 
-                    dataSourceBuilder.driverClassName(tenantProperties.getProperty("datasource.driver-class-name"));
-                    dataSourceBuilder.username(tenantProperties.getProperty("datasource.username"));
-                    dataSourceBuilder.password(tenantProperties.getProperty("datasource.password"));
-                    dataSourceBuilder.url(tenantProperties.getProperty("datasource.url"));
-                    resolvedDataSources.put(tenantId, dataSourceBuilder.build());
-                } catch (IOException exp) {
-                    throw new RuntimeException("Problem in tenant datasource:" + exp);
-                }
-            }
-        }else throw new RuntimeException("Problem loading tenant files.");
+            dataSourceBuilder.driverClassName(properties.getProperty("datasource.driver-class-name"));
+            dataSourceBuilder.username(properties.getProperty("datasource.username"));
+            dataSourceBuilder.password(properties.getProperty("datasource.password"));
+            dataSourceBuilder.url(properties.getProperty("datasource.url"));
+            resolvedDataSources.put(tenantId, dataSourceBuilder.build());
+        }
 
         AbstractRoutingDataSource dataSource = new MultiTenantDataSource();
         dataSource.setDefaultTargetDataSource(resolvedDataSources.get(defaultTenant));
@@ -56,4 +46,22 @@ public class MultiTenantConfiguration {
         return dataSource;
     }
 
+    public List<Properties> getTenantProperties() {
+        File[] files = Paths.get("src/main/resources/tenants").toFile().listFiles();
+        List<Properties> propertiesList = new ArrayList<>();
+
+        if (files != null) {
+
+            for (File propertyFile : files) {
+                try {
+                    Properties tenantProperties = new Properties();
+                    tenantProperties.load(new FileInputStream(propertyFile));
+                    propertiesList.add(tenantProperties);
+                } catch (IOException ex) {
+                    throw new RuntimeException("Problem in tenant datasource:" + ex);
+                }
+            }
+        }
+        return propertiesList;
+    }
 }

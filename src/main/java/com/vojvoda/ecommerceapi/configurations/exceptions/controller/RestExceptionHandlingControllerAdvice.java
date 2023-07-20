@@ -322,4 +322,20 @@ public class RestExceptionHandlingControllerAdvice {
 
         return buildResponseEntity(exception, exceptionResponseObject);
     }
+
+    /**
+     * This method is responsible to intercept and return to the client all Tenant configuration Exceptions
+     * that are thrown.
+     *
+     * @param exception - Used to get details about the exception
+     * @return ResponseEntity of {@link ExceptionResponseObject}
+     */
+    @ExceptionHandler(TenantException.class)
+    public ResponseEntity<Object> handleTenantException(TenantException exception) {
+
+        ExceptionResponseObject exceptionResponseObject =
+                new ExceptionResponseObject(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+
+        return buildResponseEntity(exception, exceptionResponseObject);
+    }
 }
