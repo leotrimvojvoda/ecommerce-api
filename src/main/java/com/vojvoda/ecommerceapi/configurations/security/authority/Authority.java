@@ -20,7 +20,7 @@ public class Authority {
   @Enumerated(EnumType.STRING)
   private AuthorityEnum name;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "users_authorities",
           joinColumns = @JoinColumn(name = "authority_id"),
           inverseJoinColumns = @JoinColumn(name = "user_id")
