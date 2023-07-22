@@ -1,12 +1,12 @@
 package com.vojvoda.ecommerceapi.core.user;
 
+import com.vojvoda.ecommerceapi.configurations.exceptions.models.NotFoundException;
 import com.vojvoda.ecommerceapi.configurations.security.authority.Authority;
 import com.vojvoda.ecommerceapi.configurations.security.authority.AuthorityNotFoundException;
 import com.vojvoda.ecommerceapi.configurations.security.authority.AuthorityRepository;
 import com.vojvoda.ecommerceapi.core.user.dto.request.CreateUser;
 import com.vojvoda.ecommerceapi.core.user.dto.request.UpdateUser;
 import com.vojvoda.ecommerceapi.core.user.dto.response.ViewUser;
-import com.vojvoda.ecommerceapi.configurations.exceptions.models.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(CreateUser createUser) {
 
-        log.info("");
         Authority authorities = authorityRepository.getAuthorityByName(createUser.getAuthority())
                 .orElseThrow(() -> new AuthorityNotFoundException("Authority not found: " + createUser.getAuthority()));
 
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
         if(viewUser != null)
             return viewUser;
-        else throw new RuntimeException("User not found: "+email);
+        else throw new NotFoundException("User not found: "+email);
     }
 
     /**
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
         if(viewUser != null)
             return viewUser;
-        else throw new RuntimeException("No users found");
+        else throw new NotFoundException("No users found");
     }
 
     /**

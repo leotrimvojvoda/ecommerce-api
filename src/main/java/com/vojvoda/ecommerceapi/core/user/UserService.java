@@ -3,13 +3,12 @@ package com.vojvoda.ecommerceapi.core.user;
 import com.vojvoda.ecommerceapi.core.user.dto.request.CreateUser;
 import com.vojvoda.ecommerceapi.core.user.dto.request.UpdateUser;
 import com.vojvoda.ecommerceapi.core.user.dto.response.ViewUser;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface UserService {
 
-    User createUser(@Valid CreateUser createUser);
+    User createUser(CreateUser createUser);
 
     ViewUser findUserById(Long id);
 
